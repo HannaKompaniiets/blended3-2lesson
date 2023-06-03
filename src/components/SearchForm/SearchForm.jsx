@@ -22,6 +22,10 @@ export class SearchForm extends Component {
     event.preventDefault();
     const { query } = this.state;
 
+    // if(query.trim() === '') {
+    //   return alert('введіть щось')
+    // }
+
     this.props.onSubmit(query);
 
     this.setState({ query: '' });
