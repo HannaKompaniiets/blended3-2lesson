@@ -61,7 +61,19 @@ export class Gallery extends Component {
     return (
       <>
         <SearchForm onSubmit={this.onHandleSubmit} />
-        <Text textAlign="center">Sorry. There are no images ... 😭</Text>
+        {error && <Text textAlign="center">❌ Something went wrong - {error}</Text>}
+        {isEmpty && <Text textAlign="center">Sorry. There are no images ... 😭</Text>}
+        <Grid>
+          {images.length > 0 && images.map(({id, avg_color, alt, src}) => (
+            <GridItem key={id}>
+              <CardItem color={avg_color}>
+                <img src={src.large} alt={alt}/>
+              </CardItem>
+            </GridItem>
+          ))}
+        </Grid>
+        {isVisible && <Button onClick={this.onLoadMore} disabled={isLoading}>{isLoading? 'Loading...': 'Load more'}</Button>}
+        
       </>
     );
   }
