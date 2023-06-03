@@ -11,6 +11,7 @@ export class Gallery extends Component {
     isLoading: false,
     isEmpty: false,
     isVisible: false,
+    error: null,
   };
 
   componentDidUpdate(_, prevState) {
@@ -41,15 +42,22 @@ export class Gallery extends Component {
         images: [...prevState.images, ...photos],
         isVisible: currentPage < Math.ceil(total_results / per_page),
       }));
-    } catch (error) {
-    } finally {
+    } catch (error) {this.setState({error: error.message})
+    } finally {  
+      this.setState({isLoading: false})
     }
   };
 
   onHandleSubmit = value => {
-    console.log(value, 'console from Gallery');
+  this.setState({query: value, page: 1, images: [], error: null, isEmpty: false})
   };
+
+  onLoadMore = () => {
+    this.setState(prevState => ({page: prevState.page + 1 }))
+  }
+
   render() {
+    const {images, isVisible, isEmpty, isLoading, error} = this.state
     return (
       <>
         <SearchForm onSubmit={this.onHandleSubmit} />
